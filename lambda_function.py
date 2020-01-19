@@ -95,7 +95,7 @@ class RevisionHandler(AbstractRequestHandler):
     """
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return (is_intent_name( RevisionIntent")(handler_input) or
+        return (is_intent_name("RevisionIntent")(handler_input) or
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
 
     def handle(self, handler_input):
@@ -129,6 +129,7 @@ class RevisionAnswerHandler(AbstractRequestHandler):
         else:
             speech = util.get_speechcon(correct_answer=False)
             speech += "The correct answer is " + util.get_answer()
+            util.set_score(1)
             if util.any_questions_left():
                 # Ask another question
                 question = util.get_question()
@@ -155,7 +156,7 @@ class RevisionAnswerScoreHandler(AbstractRequestHandler):
         response_builder = handler_input.response_builder
 
         util.set_score(
-            handler_input.request_envelope.request.intent.slots["score"])
+            int(handler_input.request_envelope.request.intent.slots["score"])+2)
 
         if util.any_questions_left():
             # ask next question

@@ -1,38 +1,38 @@
 # -*- coding: utf-8 -*-
 
 """Utility module to generate text for commonly used responses."""
-
 import random
-import six
-from ask_sdk_core.handler_input import HandlerInput
-from ask_sdk_core.utils import is_request_type
-import card as backend
+import alexa.card_class as backend
 
-from . import data
+import alexa.data as data
+
+def test():
+    backend.card.print_test()
 
 def any_questions_left():
-    return backend.any_questions_left()
-
+    return backend.card.any_questions_left()
 
 
 def get_question():
     # TODO: deal with the EOf thing
-    return backend.draw_card()
+    return backend.card.draw_card()
 
 
 def get_answer():
     """Return response text for correct answer to the user."""
-    
-    return backend.get_correct_answer()
+    return backend.card.get_correct_answer()
+
 
 def is_answer_correct(answer):
     # (HandlerInput) -> None
     # TODO: impleemnt percentage accuracy instead of one-one accuracy
-    return backend.is_answer_correct(answer)
-    
+    return backend.card.check_answer(answer)
+
+
 def set_score(score):
-    backend.return_card(int(score))
-    
+    backend.card.return_card(int(score))
+
+
 def get_speechcon(correct_answer):
     """Return speechcon corresponding to the boolean answer correctness."""
     text = ("<say-as interpret-as='interjection'>{} !"
@@ -42,3 +42,11 @@ def get_speechcon(correct_answer):
     else:
         return text.format(random.choice(data.WRONG_SPEECHCONS))
 
+def move_date(diff):
+    backend.card.move_date(diff)
+
+def next_date():
+    return(backend.card.next_date())
+
+def get_current_date():
+    return (backend.card.get_current_date())
