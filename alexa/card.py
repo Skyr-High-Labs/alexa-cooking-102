@@ -1,17 +1,17 @@
 import datetime
 import heapq
-
+import math
 
 class card:
     cards = []
     last_card = None
     answered = True
-    time = datetime.today()
+    time = datetime.date.today()
 
     def __init__(self, question, answer):
         self.question = question
         self.answer = answer
-        self.time = card.time.replace(second=0, microsecond=0)
+        self.time = card.time
         self.repetitions = 0
         self.interval = 1
         self.easiness = 2.5
