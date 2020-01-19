@@ -21,18 +21,13 @@ class card:
     def draw_card():
         if not card.answered:
             heapq.heappush(card.cards, [card.last_card.next_time, card.last_card])
-        if card.cards[0][1].next_time > card.time:
-            return "EOF, users shouldn't see this"
         last_card = heapq.heappop(card.cards)[1]
         card.answered = False
         return last_card.question
-
+        
     @staticmethod
-    def check_queue():
-        if card.cards[0][1].next_time > card.time:
-            return False
-        else:
-            return True
+    def any_questions_left():
+        return (card.cards[0][1].next_time > card.time)
 
     @staticmethod
     def move_date(difference):
@@ -43,8 +38,8 @@ class card:
         return card.last_card.next_time.strftime("%d/%m/%Y")
 
     @staticmethod
-    def check_answer(last_card, answer):
-        return last_card.answer == answer
+    def check_answer(answer):
+        return card.last_card.answer == answer
 
     @staticmethod
     def return_card(quality):
@@ -64,7 +59,7 @@ class card:
         heapq.heappush(card.cards, [card.last_card.next_time, card.last_card])
 
     @staticmethod
-    def right_answer():
+    def get_correct_answer():
         return card.last_card.answer
 
     def next_time(self):

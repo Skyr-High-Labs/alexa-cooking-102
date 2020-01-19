@@ -99,7 +99,7 @@ class RevisionHandler(AbstractRequestHandler):
                 is_intent_name("AMAZON.StartOverIntent")(handler_input))
 
     def handle(self, handler_input):
-        question = util.ask_question()
+        question = util.get_question()
         speech = question
         response_builder = handler_input.response_builder
         response_builder.speak(speech)
@@ -108,33 +108,6 @@ class RevisionHandler(AbstractRequestHandler):
         last_speech = speech
         return response_builder.response
 
-class RevisionAnswerScoreHandler(AbstractRequestHandler):
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return (is_intent_name("AnswerScoreIntent")(handler_input) )
-
-    def handle(self, handler_input):
-       
-        response_builder = handler_input.response_builder
-        
-        util.set_score(handler_input.request_envelope.request.intent.slots["score"])
-        
-        if util.any_questions_left():
-            # ask next question
-            question = util.ask_question()
-            speech = question
-            reprompt = question
-            # backup last speech
-            last_speech = speech
-            return response_builder.speak(speech).ask(reprompt).response
-        else:
-            # finished all messages, quit session
-            speech = data.END_QUIZ_MESSAGE + data.EXIT_SKILL_MESSAGE
-            response_builder.set_should_end_session(True)
-            # backup last speech
-            last_speech = speech
-            return response_builder.speak(speech).response
-            
     
 class RevisionAnswerHandler(AbstractRequestHandler):
     
@@ -145,7 +118,7 @@ class RevisionAnswerHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         response_builder = handler_input.response_builder 
 
-        if util.is_answer_correct():
+        if util.is_answer_correct(handler_input.request_envelope.request.intent.slots["answer"]):
             speech = util.get_speechcon(correct_answer=True)
             # rating
             speech += data.SCORE_ANSWER_MESSAGE
@@ -158,7 +131,7 @@ class RevisionAnswerHandler(AbstractRequestHandler):
             speech += "The correct answer is " + util.get_answer()
             if util.any_questions_left():
                 # Ask another question
-                question = util.ask_question()
+                question = util.get_question()
                 speech += question
                 reprompt = question
                 # backup last speech
@@ -171,6 +144,34 @@ class RevisionAnswerHandler(AbstractRequestHandler):
                 last_speech = speech
                 return response_builder.speak(speech).response
 
+
+class RevisionAnswerScoreHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return (is_intent_name("AnswerScoreIntent")(handler_input))
+
+    def handle(self, handler_input):
+
+        response_builder = handler_input.response_builder
+
+        util.set_score(
+            handler_input.request_envelope.request.intent.slots["score"])
+
+        if util.any_questions_left():
+            # ask next question
+            question = util.get_question()
+            speech = question
+            reprompt = question
+            # backup last speech
+            last_speech = speech
+            return response_builder.speak(speech).ask(reprompt).response
+        else:
+            # finished all messages, quit session
+            speech = data.END_QUIZ_MESSAGE + data.EXIT_SKILL_MESSAGE
+            response_builder.set_should_end_session(True)
+            # backup last speech
+            last_speech = speech
+            return response_builder.speak(speech).response
 
 class RepeatHandler(AbstractRequestHandler):
     """Handler for repeating the response to the user."""
