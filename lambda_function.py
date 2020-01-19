@@ -187,27 +187,9 @@ class RepeatHandler(AbstractRequestHandler):
         else:
             return response_builder.speak(data.FALLBACK_ANSWER).ask(data.HELP_MESSAGE).response
 
-
-# Interceptor classes
-class CacheResponseForRepeatInterceptor(AbstractResponseInterceptor):
-    """Cache the response sent to the user in session.
-
-    The interceptor is used to cache the handler response that is
-    being sent to the user. This can be used to repeat the response
-    back to the user, in case a RepeatIntent is being used and the
-    skill developer wants to repeat the same information back to
-    the user.
-    """
-    def process(self, handler_input, response):
-        # type: (HandlerInput, Response) -> None
-        session_attr = handler_input.attributes_manager.session_attributes
-        session_attr["recent_response"] = response
-
-
 # Exception Handler classes
 class CatchAllExceptionHandler(AbstractExceptionHandler):
     """Catch All Exception handler.
-
     This handler catches all kinds of exceptions and prints
     the stack trace on AWS Cloudwatch with the request envelope."""
     def can_handle(self, handler_input, exception):
@@ -216,10 +198,8 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
     def handle(self, handler_input, exception):
         # type: (HandlerInput, Exception) -> Response
-
         speech = "Sorry, there was some problem. Please try again!!"
         handler_input.response_builder.speak(speech).ask(speech)
-
         return handler_input.response_builder.response
 
 
@@ -228,21 +208,18 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
 # Add all request handlers to the skill.
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler RevisionHandler())
-sb.add_request_handler(DefinitionHandler())
-sb.add_request_handler RevisionAnswerHandler())
-sb.add_request_handler RevisionAnswerElementSelectedHandler())
+sb.add_request_handler(RevisionHandler())
+sb.add_request_handler(RevisionAnswerHandler())
 sb.add_request_handler(RepeatHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(ExitIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
-sb.add_request_handler(FallbackIntentHandler())
 
 # Add exception handler to the skill.
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 # Add response interceptor to the skill.
-sb.add_global_response_interceptor(CacheResponseForRepeatInterceptor())
+# sb.add_global_response_interceptor(CacheResponseForRepeatInterceptor())
 
 
 # Expose the lambda handler to register in AWS Lambda.
