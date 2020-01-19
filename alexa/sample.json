@@ -1,22 +1,50 @@
 [
   {
-    "question": "which is the best programming language?",
-    "answer": "prolog"
+    "question": "What does one create objects with?",
+    "answer": "Constructors"
   },
   {
-    "question": "what do you create classes with?",
-    "answer": "constructors"
+    "question": "What adjective do you use to describe something owned by a class instead of an object?",
+    "answer": "Static"
   },
   {
-    "question": "a horse walks into a bar. what does the bartender ask him?",
-    "answer": "why the long face?"
+    "question": "What is another name for superclasses of a class?",
+    "answer": "Parents"
   },
   {
-    "question": "hoy many prime numbers are there",
-    "answer": "an infinity "
+    "question": "What do you call functions associated with a class?",
+    "answer": "Methods"
   },
   {
-    "question": "who is the real slim shady?",
-    "answer": "eminem"
+    "question": "What happens when a superclass and a subclass share an attribute with the same name?",
+    "answer": "Shadowing"
+  },
+  {
+    "question": "What are the templates for design class structure called?",
+    "answer": "Patterns"
+  },
+  {
+    "question": "How do you call the items a function is given when called?",
+    "answer": "Arguments"
+  },
+  {
+    "question": "What does the A from ACID stand for (in the Computer Science context)",
+    "answer": "Atomicity"
+  },
+  {
+    "question": "Could you give me a synonym for a lazy list?",
+    "answer": "Stream"
+  },
+  {
+    "question": "How do you call an object which doesn't change its internal state once constructed?",
+    "answer": "Immutable"
   }
+//this is just to fill them out easily, TODO remove this
+,
+
+  {
+    "question": "",
+    "answer": ""
+  }
+
 ]
